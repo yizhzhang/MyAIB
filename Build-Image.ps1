@@ -1,8 +1,13 @@
 #Source of script, https://docs.microsoft.com/en-us/azure/virtual-machines/windows/image-builder-powershell#next-steps
 
 #Create an Azure Compute Gallery
-$myGalleryName = '<gallery name>'
-$imageDefName = '<image def name>'
+$myGalleryName = '<gallery_name>'
+$imageDefName = '<defination_name>'
+$imageResourceGroup = '<resource_group>'
+$location = '<location>'
+$runOutputName = '<output_name>'
+$identityNameResourceId = '<identity_name>'
+$imageTemplateName = '<template_name>'
 
 New-AzGallery -GalleryName $myGalleryName -ResourceGroupName $imageResourceGroup -Location $location
 
@@ -78,8 +83,8 @@ New-AzImageBuilderTemplate @ImgTemplateParams
 Get-AzImageBuilderTemplate -ImageTemplateName $imageTemplateName -ResourceGroupName $imageResourceGroup |
   Select-Object -Property Name, LastRunStatusRunState, LastRunStatusMessage, ProvisioningState
 
-#Remove template.
-Remove-AzImageBuilderTemplate -ImageTemplateName $imageTemplateName -ResourceGroupName $imageResourceGroup
-
 #Start the image build, Submit the image configuration to the VM image builder service.
 Start-AzImageBuilderTemplate -ResourceGroupName $imageResourceGroup -Name $imageTemplateName
+
+#Remove template.
+Remove-AzImageBuilderTemplate -ImageTemplateName $imageTemplateName -ResourceGroupName $imageResourceGroup
